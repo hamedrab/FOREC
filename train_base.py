@@ -15,10 +15,12 @@ import pandas as pd
 import torch
 from torch.autograd import Variable
 from torch.utils.data import DataLoader, Dataset, ConcatDataset
-from model import GMF, MLP, NeuMF
 
+sys.path.insert(1, 'src')
+from model import GMF, MLP, NeuMF
 from utils import *
 from data import *
+
 from tqdm import tqdm
 import os
 import json

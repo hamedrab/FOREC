@@ -3,6 +3,8 @@ import pandas as pd
 import torch
 from torch.autograd import Variable
 from torch.utils.data import DataLoader, Dataset, ConcatDataset
+
+sys.path.insert(1, 'src')
 from model import GMF, MLP, NeuMF
 from model import NeuMF_MH
 
