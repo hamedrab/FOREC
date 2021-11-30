@@ -1,6 +1,14 @@
 # FOREC: A Cross-Market Recommendation System
 This repository provides the implementation of our CIKM 2021 paper titled as "[Cross-Market Product Recommendation](https://arxiv.org/pdf/2109.05929.pdf)". Please consider citing our paper if you find the code and [XMarket dataset](https://xmrec.github.io/) useful in your research. 
 
+The general schema of our FOREC recommendation system is shown below. For a pair of markets, the middle part shows the market-agnostic model that we pre-train, and then fork and fine-tune for each market shown in the left and right. Note that FOREC is capable of working with any desired number of target markets. However, for simplicity, we only experiment with pairs of markets for the experiments. For further details, please refer to our paper. 
+
+
+<p align="center">
+  <img src="https://github.com/hamedrab/FOREC/blob/main/FOREC.png" width=80% height=80%>  
+</p>
+
+
 ## Requirements:
 We use conda for our experimentations. Please refer to the `requirements.txt` for the list of libraries we use for our implementation. After setting up your environment, you can simply run this command `pip install -r requirements.txt`. 
 
@@ -11,46 +19,22 @@ We use conda for our experimentations. Please refer to the `requirements.txt` fo
 - [pytrec_eval](https://github.com/cvangysel/pytrec_eval)
 
 ## DATA
-The `DATA` folder in this repository contains the two target markets data (train ratings, validation run and qrel, and test run) that we conduct our evaluation on them and three source markets that you can use as desired to augment with the target markets. It is ultimately your choice on how to use the provided data (or any other additional data, if you will) to improve the recommendation performance on target markets. 
+The `DATA` folder in this repository contains the cleaned and proccessed data that we use for our experiments. Please note that we made a few changes with releasing the data, and you might see slightly different numbers compared to the reported numbers in the paper. 
+
+If you wish to repeat the process on other categories of data or change the data preprocessing steps, `prepare_data.ipynb` provides the code for downloading and preprocessing data. Please refer to that jupyter notebook for further details. Don't hesitate to contact us in case of any problem. 
 
 
-## Train the baseline models:
-`train_baseline.py` is the script for training our simple GMF++ model that is taking one target market and zero to a few source markets for augmenting with the target market. We implemented our dataloader such that it loads all the data and samples equally from each market in the training phase. You can use ConcatDataset from `torch.utils.data` to concatenate your torch Datasets. 
+## Train the baseline and FOREC models (with Evaluations):
+We provide three training scripts, for training baselines (single market, GMF, MLP, NMF++ and MAML) as well as FOREC model. Here are the list of models that for training and evaluating with the scripts provided:
+- `train_base.py` for GMF, MLP, NMF and their ++ versions as cross-market models
+- 'train_maml.py' for training our MAML baseline
+- 'train_forec.py' for trainig our proposed FOREC model
 
+Note that since MAML and FOREC works on NMF architecture, you need to have same setting NMF++ model trained before proceeding with the MAML and FOREC training scripts. In addition, NMF requires that GMF and MLP models are trained, as it combines these two models into the architecture with some additional layers. See the middle part of the FOREC schema above. 
 
-Here is a sample train script using two source markets:
+In order to faciliate this, we provide a jupyter notebook (`train_all.ipynb`) that generates correct commands for all these trainings on any desired target market and augmenting source market pairs. Please follow the notebook for the training. For our trainings, we use slurm job management system on our server. However, you can still use/change the bash script generating part in the notebook to fit your own setup. These scripts are written into `scripts` folder created by the notebook. The logging of the training is alos in this directory under `log` sub-directory. 
 
-    python train_baseline.py --tgt_market t1 --src_markets s1-s2 --tgt_market_valid DATA/t1/valid_run.tsv --tgt_market_test DATA/t1/test_run.tsv --exp_name toytest --num_epoch 5 --cuda
-    
-Here is a sample train script using zero source market (only train on the target data):
-
-    python train_baseline.py --tgt_market t1 --src_markets none --tgt_market_valid DATA/t1/valid_run.tsv --tgt_market_test DATA/t1/test_run.tsv --exp_name toytest --num_epoch 5 --cuda
-
-
-After training your model, the scripts prints the directories of model and index checkpoints as well as the run files for the validation and test data as below. You can load the model for other usage and evaluate the validation run file. See the notebook `getting_started.ipynb` for a sample code on these. 
-
-    Model is trained! and saved at:
-    --model: checkpoints/t1_s1-s2_toytest.model
-    --id_bank: checkpoints/t1_s1-s2_toytest.pickle
-    Run output files:
-    --validation: valid_t1_s1-s2_toytest.tsv
-    --test: test_t1_s1-s2_toytest.tsv
-    
-You will need to upload the test run output file (.tsv file format) for both target markets to Codalab for our evaluation and leaderboard entry. This output file contains ranked items for each user with their score. Our final evaluation metric is based on nDCG@10 on both target markets.   
-
-
-
-## FOREC
-The general schema of our FOREC recommendation system is shown below. For a pair of markets, the middle part shows the market-agnostic model that we pre-train, and then fork and fine-tune for each market shown in the left and right. Note that FOREC is capable of working with any desired number of target markets. However, for simplicity, we only experiment with pairs of markets for the experiments. For further details, please refer to our paper. 
-
-
-<p align="center">
-  <img src="https://github.com/hamedrab/FOREC/blob/main/FOREC.png" width=80% height=80%>  
-</p>
-
-
-
-
+Note that for each of these, the train script evaluates on validation and test data (leave-one-out procedure for splitting---see `data.py`). The detailed evaluation results are dumped into `EVAL` folder as json files. Our trained checkpoints and an aggregator of evaluation json files will be provided shortly. 
 
 
 
