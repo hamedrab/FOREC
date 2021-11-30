@@ -45,7 +45,7 @@ You will need to upload the test run output file (.tsv file format) for both tar
 
 
 <p align="center">
-  <img src="https://github.com/hamedrab/FOREC/FOREC.png" width=80% height=80%>  
+  <img src="https://github.com/hamedrab/FOREC/blob/main/FOREC.png" width=80% height=80%>  
 </p>
 
 
