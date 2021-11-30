@@ -5,7 +5,7 @@ The general schema of our FOREC recommendation system is shown below. For a pair
 
 
 <p align="center">
-  <img src="https://github.com/hamedrab/FOREC/blob/main/FOREC.png" width=80% height=80%>  
+  <img src="https://github.com/hamedrab/FOREC/blob/main/src/FOREC.png" width=80% height=80%>  
 </p>
 
 
