@@ -41,7 +41,7 @@ You will need to upload the test run output file (.tsv file format) for both tar
 
 
 ## FOREC
-
+The general schema of our FOREC recommendation system is shown below. For a pair of markets, the middle part shows the market-agnostic model that we pre-train, and then fork and fine-tune for each market shown in the left and right. Note that FOREC is capable of working with any desired number of target markets. However, for simplicity, we only experiment with pairs of markets for the experiments. For further details, please refer to our paper. 
 
 
 <p align="center">
@@ -52,14 +52,18 @@ You will need to upload the test run output file (.tsv file format) for both tar
 
 
 
-### Citation
+
+
+## Citation
 If you use this dataset, please refer to our [CIKM’21 paper](https://arxiv.org/pdf/2109.05929.pdf):
+
 ```
 @inproceedings{bonab2021crossmarket,
-	author = {Bonab, Hamed and Aliannejadi, Mohammad and Vardasbi, Ali and Kanoulas, Evangelos and Allan, James},
-	booktitle = {Proceedings of the 30th ACM International Conference on Information \& Knowledge Management},
-	publisher = {ACM},
-	title = {Cross-Market Product Recommendation},
-	year = {2021}}
+    author = {Bonab, Hamed and Aliannejadi, Mohammad and Vardasbi, Ali and Kanoulas, Evangelos and Allan, James},
+    booktitle = {Proceedings of the 30th ACM International Conference on Information \& Knowledge Management},
+    publisher = {ACM},
+    title = {Cross-Market Product Recommendation},
+    year = {2021}}
 ```
 
+Please feel free to either open an issue or contacting me at bonab [AT] cs.umass.edu
